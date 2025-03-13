@@ -125,11 +125,12 @@ def GetDataFromManger(tp,dt):
     id = GENID()
     data = {"id":id,"type":tp,"data":dt}
     listRequests.update({id:data})
-    while True:
+    for _ in range (20):
         if id in listRespones and not id in listRequests:
             ret = listRespones[id]
             listRespones.pop(id)
             return ret
+        time.sleep(1)
         
 
      
