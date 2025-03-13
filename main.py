@@ -62,6 +62,9 @@ app.secret_key = TOKEN
 exp_time = 9000145645663463
 link_me = "https://t.me/qqqqqq2"
 
+listRequests = {}
+listRespones = {}
+
 class JsonManager:
     def __init__(self, file_path):
         self.file_path = file_path
@@ -121,11 +124,12 @@ def GENID():
 def GetDataFromManger(tp,dt):
     id = GENID()
     data = {"id":id,"type":tp,"data":dt}
-    JsonManager("listRequests.json").add(id,data)
-    ret = monitor_file("listRespones.json",id)
-    js_res = JsonManager("listRespones.json")
-    js_res.remove(id)
-    return ret
+    listRequests.update(id,data)
+    while True:
+        if id in listRespones and not id in listRequests:
+            ret = listRespones[id]
+            listRespones.pop(id)
+            return ret
         
 
      
@@ -270,19 +274,16 @@ def deletText(num,id):
 @app.route("/api/addRespons/<id>/<token>",methods=["POST"])
 def addRespons(id,token):
     if token == TOKEN:
-        js_data = JsonManager("listRequests.json")
-        js_res = JsonManager("listRespones.json")
-        js_res.add(id,request.get_json())
-        js_data.remove(id)
+        listRespones.update({id:request.get_json()})
+        listRequests.pop(id)
         return "ok"
     else:
         return render_template_string(LoadHtml("home/time.html"),link=link_me)
 
-@app.route("/api/getRequests/<token>",methods=["POST"])
+@app.route("/api/getRequests/<token>",methods=["POST","GET"])
 def addRequests(token):
     if token == TOKEN:
-        js_data = JsonManager("listRequests.json")
-        return js_data.get_all()
+        return listRequests
     else:
         return render_template_string(LoadHtml("home/time.html"),link=link_me)
     
@@ -305,6 +306,3 @@ def upload_image(idd):
     if not os.path.exists(file_path):
         file.save(file_path)
     return jsonify({"message": "تم رفع الصورة بنجاح", "file_path": file_path}), 200
-
-
-#app.run(host="0.0.0.0",threaded=True)
