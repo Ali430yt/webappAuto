@@ -124,7 +124,7 @@ def GENID():
 def GetDataFromManger(tp,dt):
     id = GENID()
     data = {"id":id,"type":tp,"data":dt}
-    listRequests.update(id,data)
+    listRequests.update({id:data})
     while True:
         if id in listRespones and not id in listRequests:
             ret = listRespones[id]
@@ -306,3 +306,5 @@ def upload_image(idd):
     if not os.path.exists(file_path):
         file.save(file_path)
     return jsonify({"message": "تم رفع الصورة بنجاح", "file_path": file_path}), 200
+
+
