@@ -308,3 +308,5 @@ def upload_image(idd):
     return jsonify({"message": "تم رفع الصورة بنجاح", "file_path": file_path}), 200
 
 
+
+app.run(host="0.0.0.0",threaded=True)
