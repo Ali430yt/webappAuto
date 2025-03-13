@@ -121,16 +121,15 @@ import time,random
 def GENID():
     return ''.join(random.choices("1234567890",k=22))
 
-def GetDataFromManger(tp,dt):
+async def GetDataFromManger(tp,dt):
     id = GENID()
     data = {"id":id,"type":tp,"data":dt}
     listRequests.update({id:data})
-    for _ in range (20):
+    while True:
         if id in listRespones and not id in listRequests:
             ret = listRespones[id]
             listRespones.pop(id)
             return ret
-        time.sleep(1)
         
 
      
@@ -140,9 +139,9 @@ def LoadHtml(path):
     return open(path,encoding="utf-8").read()
 
 @app.route("/")
-def index():
+async def index():
     if int(exp_time) > int(time.time()):
-        listLogins = GetDataFromManger("getLogins",{})
+        listLogins = await GetDataFromManger("getLogins",{})
         return render_template_string(LoadHtml("home/home.html"),data=listLogins)
     else:
         return render_template_string(LoadHtml("home/time.html"),link=link_me)
