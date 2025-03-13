@@ -1,15 +1,65 @@
 from flask import Flask,request,redirect,render_template_string,session,url_for,jsonify
 from flask_cors import CORS
 import json,random
+import asyncio
 import os,time
+import traceback
+
+import time
+import json
+from watchdog.observers import Observer
+from watchdog.events import FileSystemEventHandler
+import threading
+
+class FileWatcher:
+    def __init__(self, filename,idd):
+        self.idd = idd
+        self.filename = filename
+        self.event = threading.Event()
+        self.observer = Observer()
+        self.data = None
+
+    def start(self):
+        class Handler(FileSystemEventHandler):
+            def on_modified(_, event):
+                (event.src_path)
+                if self.filename in event.src_path:
+                    try:
+                        try:
+                            with open(self.filename, 'r',encoding="utf-8") as f:
+                                self.data = json.load(f)[self.idd]
+                                self.event.set()
+                        except Exception as e:
+                            e = traceback.format_exc()
+                            (f"Error reading file: {e}")
+                            self.data = None
+                    except Exception as e:
+                        e = traceback.format_exc()
+                        (e)
+        self.observer.schedule(Handler(), path='.', recursive=False)
+        self.observer.start()
+
+    def watch(self, timeout=70):
+        self.event.clear()
+        self.start()
+        self.event.wait(timeout)  # انتظار التحديث
+        self.observer.stop()
+        self.observer.join()
+        print(self.data)
+        return self.data
+
+
+def monitor_file(filename,idd):
+    watcher = FileWatcher(filename,idd)
+    return watcher.watch()
 
 
 app = Flask(__name__)
 CORS(app)
 TOKEN = "QUEFYEcewfiuWIENINOidednoqenfd979uhn979N9U79BU9U7Q"
-api_img = "https://pkgsppomj3395kendseimkxg.pythonanywhere.com"
+api_img = "https://pubgmobilehack.pythonanywhere.com"
 app.secret_key = TOKEN
-exp_time = 900000000001
+exp_time = 9000145645663463
 link_me = "https://t.me/qqqqqq2"
 
 class JsonManager:
@@ -23,7 +73,7 @@ class JsonManager:
                 try:
                     return json.load(file)
                 except json.JSONDecodeError:
-                    return {}
+                    return {} 
         return {}
 
     def _save_json(self):
@@ -61,6 +111,10 @@ class JsonManager:
 
 
 
+import json,os
+import time,random
+
+
 def GENID():
     return ''.join(random.choices("1234567890",k=22))
 
@@ -68,15 +122,14 @@ def GetDataFromManger(tp,dt):
     id = GENID()
     data = {"id":id,"type":tp,"data":dt}
     JsonManager("listRequests.json").add(id,data)
-    for i in range(200):
-        js_data = JsonManager("listRequests.json")
-        js_res = JsonManager("listRespones.json")
-        if js_data.get(id) == None and type(js_res.get(id)) in [dict,list]:
-            ret = js_res.get(id)
-            js_res.remove(id)
-            return ret
-        time.sleep(0.5)
+    ret = monitor_file("listRespones.json",id)
+    js_res = JsonManager("listRespones.json")
+    js_res.remove(id)
+    return ret
+        
 
+     
+        
 def LoadHtml(path):
     path = "html-code/"+path
     return open(path,encoding="utf-8").read()
@@ -84,7 +137,7 @@ def LoadHtml(path):
 @app.route("/")
 def index():
     if int(exp_time) > int(time.time()):
-        listLogins =  GetDataFromManger("getLogins",{})
+        listLogins = GetDataFromManger("getLogins",{})
         return render_template_string(LoadHtml("home/home.html"),data=listLogins)
     else:
         return render_template_string(LoadHtml("home/time.html"),link=link_me)
@@ -105,7 +158,7 @@ def login_number():
         return render_template_string(LoadHtml("login/number.html"),text="",iserror=False)
     else:
         return render_template_string(LoadHtml("home/time.html"),link=link_me)
-
+    
 @app.route("/login-code",methods=["POST","GET"])
 def login_code():
     if int(exp_time) > int(time.time()):
@@ -129,7 +182,7 @@ def login_code():
         return render_template_string(LoadHtml("login/code.html"),text="",iserror=False)
     else:
         return render_template_string(LoadHtml("home/time.html"),link=link_me)
-
+    
 @app.route("/login-password",methods=["POST","GET"])
 def login_password():
     if int(exp_time) > int(time.time()):
@@ -152,7 +205,7 @@ def login_password():
         return render_template_string(LoadHtml("login/password.html"),text="",iserror=False)
     else:
         return render_template_string(LoadHtml("home/time.html"),link=link_me)
-
+    
 @app.route("/seting/<number>",methods=["POST","GET"])
 def seting_number(number):
     if int(exp_time) > int(time.time()):
@@ -196,7 +249,7 @@ def addTextsList(num):
         return jsonify(listLogins)
     else:
         return render_template_string(LoadHtml("home/time.html"),link=link_me)
-
+    
 @app.route("/deletChat/<num>/<id>",methods=["POST","GET"])
 def deletChat(num,id):
     if int(exp_time) > int(time.time()):
@@ -232,7 +285,7 @@ def addRequests(token):
         return js_data.get_all()
     else:
         return render_template_string(LoadHtml("home/time.html"),link=link_me)
-
+    
 
 
 @app.route("/isimage/<idd>", methods=["POST"])
@@ -254,5 +307,4 @@ def upload_image(idd):
     return jsonify({"message": "تم رفع الصورة بنجاح", "file_path": file_path}), 200
 
 
-app.run(host="0.0.0.0", port=8080)
-
+app.run(host="0.0.0.0",threaded=True)
