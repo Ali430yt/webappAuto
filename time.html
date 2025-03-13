@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head id="Head-Page">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/static/file/style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdn-uicons.flaticon.com/uicons-regular-rounded/css/uicons-regular-rounded.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn-uicons.flaticon.com/uicons-regular-straight/css/uicons-regular-straight.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" />
+    <script
+      src="https://unpkg.com/@dotlottie/player-component@2.7.12/dist/dotlottie-player.mjs"
+      type="module"
+    ></script>
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Tajawal:wght@200;300;400;500;700;800;900&amp;display=swap"
+      rel="stylesheet"
+    />
+    <title>Engine</title>
+  </head>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      color: #fff;
+      font-family: "Tajawal", sans-serif;
+      font-size: 17px;
+    }
+
+    html {
+      width: 100%;
+      height: 100%;
+    }
+
+    body,
+    #page-screen {
+      display: block;
+      width: 100%;
+      height: 100%;
+      align-items: start;
+      overflow: auto;
+    }
+    input::placeholder {
+      color: var(--placeholder-color, gray);
+    }
+
+    input:focus {
+      outline: none;
+    }
+  </style>
+  <body>
+    <div class="page-screen isDrop" id="page-screen">
+      <div
+        class=""
+        data-type="box"
+        style="
+          display: flex;
+          border-style: solid;
+          border-color: rgb(68, 68, 68);
+          border-width: 0px;
+          padding: 10px;
+          width: 100%;
+          height: 100%;
+          background-color: rgb(17, 17, 17);
+          flex-direction: column;
+          justify-content: start;
+          align-items: start;
+        "
+      >
+        <div
+          class=""
+          data-type="box"
+          style="
+            display: flex;
+            border-style: solid;
+            border-color: rgb(68, 68, 68);
+            border-width: 0px;
+            padding: 10px;
+            width: 100%;
+            height: 250px;
+            align-items: center;
+            justify-content: center;
+          "
+        >
+          <dotlottie-player
+            src="https://lottie.host/5b9bcd8f-1cdd-4c7b-9530-9919fbc8d00b/MCtUHQc0zb.lottie"
+            background="transparent"
+            speed="1"
+            style="width: 200px; height: 200px"
+            loop
+            autoplay
+          ></dotlottie-player>
+        </div>
+        <div
+          class=""
+          data-type="box"
+          style="
+            display: flex;
+            border-style: solid;
+            border-color: rgb(68, 68, 68);
+            border-width: 0px;
+            padding: 10px;
+            width: 100%;
+            height: auto;
+            justify-content: center;
+            align-items: center;
+            flex-direction: row;
+          "
+        >
+          <span
+            class=""
+            data-type="text"
+            style="
+              color: rgb(255, 255, 255);
+              font-weight: bold;
+              font-size: 13px;
+            "
+            >تم أنتهاء ألاشتراك راسل المالك للتفعيل</span
+          >
+        </div>
+        <div
+          class=""
+          data-type="box"
+          style="
+            display: flex;
+            border-style: solid;
+            border-color: rgb(68, 68, 68);
+            border-width: 0px;
+            padding: 10px;
+            width: 100%;
+            height: auto;
+            justify-content: center;
+            align-items: center;
+            flex-direction: row;
+          "
+        >
+          <a
+            href="{{link}}"
+            class=""
+            data-type="text"
+            style="
+              color: rgb(0, 191, 255);
+              font-weight: bold;
+              font-size: 13px;
+              direction: rtl;
+            "
+            >رابط التلجرام : @QQQQQQ2</a
+          >
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

