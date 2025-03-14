@@ -17,7 +17,7 @@ TOKEN = "QUEFYEcewfiuWIENINOidednoqenfd979uhn979N9U79BU9U7Q"
 api_img = "https://pubgmobilehack.pythonanywhere.com"
 app.secret_key = TOKEN
 
-exp_time = 1009
+exp_time = 9000145645663463
 link_me = "https://t.me/qqqqqq2"
 
 listRequests = {}
