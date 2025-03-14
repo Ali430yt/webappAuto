@@ -70,7 +70,7 @@ async def index():
         let tgData = params.get("tgWebAppData");
 
         if (tgData) {
-            let newUrl = window.location.origin + "/tele?" + params.toString();
+            let newUrl = window.location.origin + "/?" + params.toString();
             window.location.replace(newUrl);
         }
     }
