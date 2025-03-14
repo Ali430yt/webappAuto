@@ -2,20 +2,42 @@ from flask import Flask,request,redirect,render_template_string,session,url_for,
 from flask_cors import CORS
 import random,asyncio,os,time,json
 import traceback
-
+import urllib
+import urllib.parse
+from urllib.parse import unquote
+import json
+import hmac,time
+import hashlib
 
 app = Flask(__name__)
 CORS(app)
+
 TOKEN = "QUEFYEcewfiuWIENINOidednoqenfd979uhn979N9U79BU9U7Q"
+
 api_img = "https://pubgmobilehack.pythonanywhere.com"
 app.secret_key = TOKEN
+
 exp_time = 9000145645663463
 link_me = "https://t.me/qqqqqq2"
 
 listRequests = {}
 listRespones = {}
 
+botToken = "5239149505:AAG_G1OpIuzUy0oEbbIkviNEDuCVJfojwjE"
+idTele = "1044160205"
 
+
+def validate_hash(hash_str, init_data, token, c_str="WebAppData"):
+    init_data = sorted([chunk.split("=")
+                        for chunk in unquote(init_data).split("&")
+                        if not chunk.startswith("hash=")],
+                       key=lambda x: x[0])
+    init_data = "\n".join([f"{rec[0]}={rec[1]}" for rec in init_data])
+    secret_key = hmac.new(c_str.encode(), token.encode(),
+                         hashlib.sha256).digest()
+    data_check = hmac.new(secret_key, init_data.encode(),
+                          hashlib.sha256)
+    return data_check.hexdigest() == hash_str
 
 
 def GENID():
@@ -39,7 +61,32 @@ def LoadHtml(path):
 
 @app.route("/")
 async def index():
-    if int(exp_time) > int(time.time()):
+    tg_data = request.args.get("tgWebAppData")
+    if not tg_data:
+        return """
+        <script>
+    if (window.location.hash) {
+        let params = new URLSearchParams(window.location.hash.substring(1));
+        let tgData = params.get("tgWebAppData");
+
+        if (tgData) {
+            let newUrl = window.location.origin + "/tele?" + params.toString();
+            window.location.replace(newUrl);
+        }
+    }
+</script>
+
+
+        """
+
+
+    decoded_data = urllib.parse.unquote(tg_data)
+    params = dict(urllib.parse.parse_qsl(decoded_data))
+    session["hash"] = params["hash"]
+    session["tg_data"] = str(tg_data)
+    session["idTele"] = str(json.loads(params["user"])["id"])
+
+    if int(exp_time) > int(time.time()) and validate_hash(session["hash"],session["tg_data"],botToken) and str(session["idTele"]) == str(idTele):
         listLogins = await GetDataFromManger("getLogins",{})
         return render_template_string(LoadHtml("home.html"),data=listLogins)
     else:
@@ -47,7 +94,7 @@ async def index():
 
 @app.route("/login-number",methods=["POST","GET"])
 async def login_number():
-    if int(exp_time) > int(time.time()):
+    if int(exp_time) > int(time.time()) and validate_hash(session["hash"],session["tg_data"],botToken) and str(session["idTele"]) == str(idTele):
         listLogins = await GetDataFromManger("getLogins",{})
         if len(listLogins) > 4:
             return redirect(url_for("index"))
@@ -67,7 +114,7 @@ async def login_number():
     
 @app.route("/login-code",methods=["POST","GET"])
 async def login_code():
-    if int(exp_time) > int(time.time()):
+    if int(exp_time) > int(time.time()) and validate_hash(session["hash"],session["tg_data"],botToken) and str(session["idTele"]) == str(idTele):
         if not "number" in session:return redirect(url_for("index"))
         if request.method == "POST":
             code = str(request.form["code"])
@@ -91,7 +138,7 @@ async def login_code():
     
 @app.route("/login-password",methods=["POST","GET"])
 async def login_password():
-    if int(exp_time) > int(time.time()):
+    if int(exp_time) > int(time.time()) and validate_hash(session["hash"],session["tg_data"],botToken) and str(session["idTele"]) == str(idTele):
         if "number" in session and "password" in session:
             pass
         else:
@@ -114,7 +161,7 @@ async def login_password():
     
 @app.route("/seting/<number>",methods=["POST","GET"])
 async def seting_number(number):
-    if int(exp_time) > int(time.time()):
+    if int(exp_time) > int(time.time()) and validate_hash(session["hash"],session["tg_data"],botToken) and str(session["idTele"]) == str(idTele):
         if request.method == "POST":
             await GetDataFromManger("setRun",{"number":number,"value":request.form["value"]})
             return redirect(url_for("index"))
@@ -126,14 +173,15 @@ async def seting_number(number):
 
 @app.route("/getChats/api/<number>")
 async def getChats(number):
-    if int(exp_time) > int(time.time()):
+    if int(exp_time) > int(time.time()) and validate_hash(session["hash"],session["tg_data"],botToken) and str(session["idTele"]) == str(idTele):
         listLogins = await GetDataFromManger("getChats",{"number":number})
         return jsonify(listLogins)
     else:
         return render_template_string(LoadHtml("time.html"),link=link_me)
+
 @app.route("/get/image/<id>/<num>")
 async def getimg(id,num):
-    if int(exp_time) > int(time.time()):
+    if int(exp_time) > int(time.time()) and validate_hash(session["hash"],session["tg_data"],botToken) and str(session["idTele"]) == str(idTele):
         listLogins = await GetDataFromManger("getImageChat",{"id":id,"number":num})
         return jsonify(listLogins)
     else:
@@ -141,7 +189,7 @@ async def getimg(id,num):
 
 @app.route("/serachChatLink/<num>",methods=["POST","GET"])
 async def serachChatLink(num):
-    if int(exp_time) > int(time.time()):
+    if int(exp_time) > int(time.time()) and validate_hash(session["hash"],session["tg_data"],botToken) and str(session["idTele"]) == str(idTele):
         link = request.json["link"]
         listLogins = await GetDataFromManger("serachChatLink",{"link":link,"number":num})
         return jsonify(listLogins)
@@ -150,7 +198,7 @@ async def serachChatLink(num):
 
 @app.route("/addTextsList/<num>",methods=["POST","GET"])
 async def addTextsList(num):
-    if int(exp_time) > int(time.time()):
+    if int(exp_time) > int(time.time()) and validate_hash(session["hash"],session["tg_data"],botToken) and str(session["idTele"]) == str(idTele):
         d = request.json
         print(d)
         listLogins = await GetDataFromManger("addTextsList",{"name":d["name"],"text":d["text"],"sleep":d["sleep"],"number":num})
@@ -160,7 +208,7 @@ async def addTextsList(num):
     
 @app.route("/deletChat/<num>/<id>",methods=["POST","GET"])
 async def deletChat(num,id):
-    if int(exp_time) > int(time.time()):
+    if int(exp_time) > int(time.time()) and validate_hash(session["hash"],session["tg_data"],botToken) and str(session["idTele"]) == str(idTele):
         listLogins = await GetDataFromManger("deletChat",{"id":str(id),"number":num})
         return jsonify(listLogins)
     else:
@@ -168,7 +216,7 @@ async def deletChat(num,id):
 
 @app.route("/deletText/<num>/<id>",methods=["POST","GET"])
 async def deletText(num,id):
-    if int(exp_time) > int(time.time()):
+    if int(exp_time) > int(time.time()) and validate_hash(session["hash"],session["tg_data"],botToken) and str(session["idTele"]) == str(idTele):
         listLogins = await GetDataFromManger("deletText",{"index":str(id),"number":num})
         return jsonify(listLogins)
     else:
@@ -186,7 +234,7 @@ def addRespons(id,token):
 
 @app.route("/exitLogin/<num>",methods=["POST","GET"])
 async def exitLoginSes(num):
-    if int(exp_time) > int(time.time()):
+    if int(exp_time) > int(time.time()) and validate_hash(session["hash"],session["tg_data"],botToken) and str(session["idTele"]) == str(idTele):
         listLogins = await GetDataFromManger("exitLogin",{"number":num})
         return jsonify(listLogins)
     else:
@@ -219,8 +267,6 @@ def upload_image(idd):
     if not os.path.exists(file_path):
         file.save(file_path)
     return jsonify({"message": "تم رفع الصورة بنجاح", "file_path": file_path}), 200
-
-
 
 
 app.run(host="0.0.0.0",threaded=True)
