@@ -23,8 +23,8 @@ link_me = "https://t.me/qqqqqq2"
 listRequests = {}
 listRespones = {}
 
-botToken = "5239149505:AAG_G1OpIuzUy0oEbbIkviNEDuCVJfojwjE"
-idTele = "1044160205"
+botToken = "7298590705:AAEgI1qQKOqZhpfNc1T0OEshTopqUHQW9oM"
+idTele = "5609058806"
 
 
 def validate_hash(hash_str, init_data, token, c_str="WebAppData"):
